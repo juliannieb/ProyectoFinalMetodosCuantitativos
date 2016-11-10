@@ -2,8 +2,12 @@
 #include <cstdlib>
 #include <iostream>
 #include <vector>
+#include <cmath>
 
 using namespace std;
+
+typedef <vector<double> vd;
+typedef vector<vd> vvd;
 
 double calculate_b(double m) {
 	return 1 - m;
@@ -28,7 +32,37 @@ double calculate_term2(double b, vector<double> infected_species, double t){
 	return sum;
 }
 
+double calculate_susceptible_population(double s0, double m, double t, double k, double nh, vector<double> infected_species){
+	if (t == 0) {
+		return s0;
+	}
+	return calculate_g(m, t, k, nh) + calculate_b(m) * exp(-calculate_term1(calculate_b(m), infected_species, t)) * calculate_susceptible_population(s0, m, t-1, k, nh, infected_species) + ;
+}
+
+double calculate_infected_population(double calculate_susceptible_population, double s0, double m, double t, double k, double nh, vector<double> infected_species, ){
+
+}
+
 int main() {
-	cout << "Hola" << endl;
+	double m = 0.03, alfa = 0.2, rho = 0.3;
+	int h = 0, k = 0, t = 0,;
+	
+	cout << "¿Cuál es el número de especies? " << endl;
+	cin >> h;
+	cout << "¿Cuál es el número de virus? " << endl;
+	cin >> k;
+	cout << "¿Cuantos días investigo? " << endl;
+	cin >> t;
+
+	vvd infected = vvd(h, vd(k, 1.0));
+	vvd recovered = vvd(h, vd(k, 0.0));
+	vvd beta = vvd(h, vd(k, 0.5));
+	vd n = vd(h, 1);
+
+	cout << "Escribe el total de cada población" << endl;
+	for (int i = 0; i < h; i++) {
+		cin >> n[i];
+	}
+
 	return 0;
 }
