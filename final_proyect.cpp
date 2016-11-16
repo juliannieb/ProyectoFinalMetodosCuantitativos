@@ -50,8 +50,8 @@ double calculate_recovered_population(double rho, double gama, vector<vd> infect
 }
 
 void print_matrix(vector<vd> matrix, int h, int k) {
-	for (int i = 0; i < k; i++) {
-		for (int j = 0; j < h; j++) {
+	for (int i = 0; i < h; i++) {
+		for (int j = 0; j < k; j++) {
 			if (j == 0) {
 				printf("| %lf |", matrix[i][j]);
 			} else {
