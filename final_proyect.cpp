@@ -32,19 +32,19 @@ double calculate_term2(double b, vector<double> infected_species, double t){
 	return sum;
 }
 
-double sum_recovered(vector<vd> recovered_species, double b, double rho, double k) {
+double sum_recovered(vector<vd> recovered_species, double b, double rho, double k, double h, double i) {
 	for (int i = 0; i < k; i++){
-		total += recovered_species * b * (1 - exp(-rho));
+		total += recovered_species[h][i] * b * (1 - exp(-rho));
 	}
 	return total;
 }
 
-double calculate_susceptible_population(double g, double b, double term1, double sh, vector<vd> recovered_species, double t, double rho, double k){
-	return g + b * exp(-term1) * sh + sum_recovered(recovered_species, b, rho, k);
+double calculate_susceptible_population(double g, double b, double term1, double sh, vector<vd> recovered_species, double t, double rho, double k, int h, int i){
+	return g + b * exp(-term1) * sh + sum_recovered(recovered_species, b, rho, k, h, i);
 }
 
-double calculate_infected_population(double sh, double b, double term1, double term2, vector<vd> infected_species, double t, double gama){
-	return sh * b * (1 - exp(- term1)) * term2 + infected_species * b * exp(-gama);
+double calculate_infected_population(double sh, double b, double term1, double term2, vector<vd> infected_species, double t, double gama, int h, int i){
+	return sh * b * (1 - exp(- term1)) * term2 + infected_species[h][i] * b * exp(-gama);
 }
 
 double calculate_recovered(double b, double rho, double gama, vector<vd> infected_species, vector<vd> recovered_species) {
@@ -62,6 +62,7 @@ int main() {
 	cout << "¿Cuantos días investigo? " << endl;
 	cin >> t;
 
+	vd s = vd(h, 1);
 	vvd infected = vvd(h, vd(k, 1.0));
 	vvd recovered = vvd(h, vd(k, 0.0));
 	vvd beta = vvd(h, vd(k, 0.5));
