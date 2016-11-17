@@ -29,24 +29,24 @@ double calculate_term2(vector<vd> beta, vector<vd> infected_species, int h, int 
 	return ((beta[h][i] * infected_species[h][i]) / calculate_term1(beta, infected_species, h, k));
 }
 
-double sum_recovered(vector<vd> recovered_species, double m, double rho, int h, double k) {
+double sum_recovered(vector<vd> recovered_species, double m, vvd rho, int h, double k) {
 	int total = 0;
 	for (int i = 0; i < k; i++){
-		total += recovered_species[h][i] * calculate_b(m) * (1 - exp(-rho));
+		total += recovered_species[h][i] * calculate_b(m) * (1 - exp(-rho[h][i]));
 	}
 	return total;
 }
 
-double calculate_susceptible_population(vector<double> s, vector<vd> beta, vector<vd> recovered_species, vector<vd> infected_species, double rho, int k, int h, double m, vector<double> k1, vector<double> n){
+double calculate_susceptible_population(vector<double> s, vector<vd> beta, vector<vd> recovered_species, vector<vd> infected_species, vvd rho, int k, int h, double m, vector<double> k1, vector<double> n){
 	return calculate_g(m, k1, n, h) + calculate_b(m) * exp(-calculate_term1(beta, infected_species, h, k)) * s[h] + sum_recovered(recovered_species, m, rho, h, k);
 }
 
-double calculate_infected_population(vector<double> s, vector<vd> beta, vector<vd> infected_species, int h, int i, int k, double gama, double m){
-	return s[h] * calculate_b(m) * (1 - exp(-calculate_term1(beta, infected_species, h, k))) * calculate_term2(beta, infected_species, h, i, k) + infected_species[h][i] * calculate_b(m) * exp(-gama);
+double calculate_infected_population(vector<double> s, vector<vd> beta, vector<vd> infected_species, int h, int i, int k, vvd gama, double m){
+	return s[h] * calculate_b(m) * (1 - exp(-calculate_term1(beta, infected_species, h, k))) * calculate_term2(beta, infected_species, h, i, k) + infected_species[h][i] * calculate_b(m) * exp(-gama[h][i]);
 }
 
-double calculate_recovered_population(double rho, double gama, vector<vd> infected_species, vector<vd> recovered_species, int h, int i, double m) {
-	return recovered_species[h][i] * calculate_b(m) * exp(-rho) + infected_species[h][i] * calculate_b(m) * (1 - exp(-gama));
+double calculate_recovered_population(vvd rho, vvd gama, vector<vd> infected_species, vector<vd> recovered_species, int h, int i, double m) {
+	return recovered_species[h][i] * calculate_b(m) * exp(-rho[h][i]) + infected_species[h][i] * calculate_b(m) * (1 - exp(-gama[h][i]));
 }
 
 void print_matrix(vector<vd> matrix, int h, int k) {
@@ -72,8 +72,18 @@ void print_vector(vector<double> vector_aux, int h) {
 	}
 }
 
+void fill_random_matrix(vvd &matrix) {
+	for (int i = 0; i < matrix.size(); i++) {
+		for (int j = 0; j < matrix[i].size(); j++) {
+			double random_val = (double)(rand() % 500) / 1000;
+			matrix[i][j] = random_val;
+		}
+	}
+}
+
 int main() {
-	double m = 0.03, alfa = 0.2, rho = 0.3, gama = 0.3;
+	srand (time(NULL));
+	double m = 0.03, alfa = 0.2;
 	int h = 0, k = 0, t = 0, species = 0;
 	
 	cout << "¿Cuál es el número de especies? " << endl;
@@ -88,6 +98,12 @@ int main() {
 	vvd infected = vvd(h, vd(k, 1.0));
 	vvd recovered = vvd(h, vd(k, 0.0));
 	vvd beta = vvd(h, vd(k, 0.5));
+	vvd rho = vvd(h, vd(k, 0.5));
+	vvd gama = vvd(h, vd(k, 0.5));
+
+	fill_random_matrix(beta);
+	fill_random_matrix(rho);
+	fill_random_matrix(gama);
 
 	vd s = vd(h, 1);
 	vd n = vd(h, 1);
