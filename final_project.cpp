@@ -81,16 +81,27 @@ void fill_random_matrix(vvd &matrix) {
 	}
 }
 
+void fill_matrix(vvd &matrix){
+	double val = 0;
+	for (int i = 0; i < matrix.size(); i++) {
+		for (int j = 0; j < matrix[i].size(); j++) {
+			printf("| mat[%i][%i]: |", i,j);
+			cin >> val;
+			matrix[i][j] = val;
+		}
+	}
+}
+
 int main() {
 	srand (time(NULL));
 	double m = 0.03, alfa = 0.2;
 	int h = 0, k = 0, t = 0, species = 0;
 	
-	cout << "¿Cuál es el número de especies? " << endl;
+	cout << "\nWhat's the amount of species? " << endl;
 	cin >> h;
-	cout << "¿Cuál es el número de virus? " << endl;
+	cout << "\nWhat's the amount of virus? " << endl;
 	cin >> k;
-	cout << "¿Cuantos días investigo? " << endl;
+	cout << "\nHow many days do I investigate? " << endl;
 	cin >> t;
 
 	species = h;
@@ -101,15 +112,21 @@ int main() {
 	vvd rho = vvd(h, vd(k, 0.5));
 	vvd gama = vvd(h, vd(k, 0.5));
 
-	fill_random_matrix(beta);
-	fill_random_matrix(rho);
-	fill_random_matrix(gama);
+	//fill_random_matrix(beta);
+	//fill_random_matrix(rho);
+	//fill_random_matrix(gama);
+	cout << "\nEnter the values of 'beta' \n" << endl;
+	fill_matrix(beta);
+	cout << "\nEnter the values of 'rho' " << endl;
+	fill_matrix(rho);
+	cout << "\nEnter the values of 'gama' " << endl;
+	fill_matrix(gama);
 
 	vd s = vd(h, 1);
 	vd n = vd(h, 1);
 	vd k1 = vd(h, 1);
 
-	cout << "Escribe el total de cada población" << endl;
+	cout << "\nEnter the total of each population" << endl;
 
 	for (int h = 0; h < species; h++) {
 		cin >> n[h];
