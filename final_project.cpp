@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <cmath>
 
@@ -62,7 +63,7 @@ void print_matrix(vector<vd> matrix, int h, int k) {
 	}
 }
 
-void print_vector(vector<double> vector_aux, int h) {
+void print_vector(vector<double> &vector_aux, int h) {
 	for (int i = 0; i < h; i++) {
 		if (i == 0) {
 			printf("| %lf |", vector_aux[i]);
@@ -90,6 +91,42 @@ void fill_matrix(vvd &matrix){
 			matrix[i][j] = val;
 		}
 	}
+}
+
+void print_csv_vector_in_file(vd &array, const char *filename) {
+	ofstream file;
+	file.open(filename, ios::out | ios::app);
+	for (int i = 0; i < array.size(); i++) {
+		file << array[i] << (i < array.size() - 1 ? ", " : "");
+	}
+	file << "\n";
+	file.close();
+}
+
+void print_csv_matrix_in_file(vvd &matrix, const char *filename) {
+	ofstream file;
+	file.open(filename, ios::out | ios::app);
+	for (int i = 0; i < matrix.size(); i++) {
+		for (int j = 0; j < matrix[i].size(); j++) {
+			file << matrix[i][j] << (j < matrix[i].size() - 1 ? ", " : "");
+		}
+		file << "\n";
+	}
+	file.close();
+}
+
+void clean_file(const char *filename) {
+	ofstream file;
+	file.open(filename, ios::out);
+	file << "";
+	file.close();
+}
+
+void print_in_file(string s, const char *filename) {
+	ofstream file;
+	file.open(filename, ios::out | ios::app);
+	file << s;
+	file.close();
 }
 
 int main() {
@@ -134,23 +171,29 @@ int main() {
 		s[h] = n[h];
 	}
 
-	printf("\nDay 0\n");
+	const char *result_filename = "result.csv";
+	clean_file(result_filename);
 
-	printf("Susceptible table\n");
-	print_vector(s, species);
-	printf("\n\n");
+	print_in_file("Day 0\n", result_filename);
 
-	printf("Infected table\n");
-	print_matrix(infected, species, k);
-	printf("\n");
+	print_in_file("Susceptible table\n", result_filename);
+	print_csv_vector_in_file(s, result_filename);
+	print_in_file("\n", result_filename);
 
-	printf("Recovered table\n");
-	print_matrix(recovered, species, k);
-	printf("\n");
+	print_in_file("Infected table\n", result_filename);
+	print_csv_matrix_in_file(infected, result_filename);
+	print_in_file("\n", result_filename);
+
+	print_in_file("Recovered table\n", result_filename);
+	print_csv_matrix_in_file(recovered, result_filename);
+	print_in_file("\n", result_filename);
 
 	for (int a = 1; a <= t; a++) {
 
-		printf("Day %d\n", a);
+		ofstream file;
+		file.open(result_filename, ios::out | ios::app);
+		file << "Day " << a << "\n";
+		file.close();
 
 		for (int h = 0; h < species; h++) {
 			s[h] = calculate_susceptible_population(s, beta, recovered, infected, rho, k, h, m, k1, n);
@@ -162,17 +205,20 @@ int main() {
 			}
 		}
 
-		printf("Susceptible table\n");
-		print_vector(s, species);
-		printf("\n\n");
+		print_in_file("Susceptible table\n", result_filename);
+		//print_vector(s, species);
+		print_csv_vector_in_file(s, result_filename);
+		print_in_file("\n", result_filename);
 
-		printf("Infected table\n");
-		print_matrix(infected, species, k);
-		printf("\n");
+		print_in_file("Infected table\n", result_filename);
+		//print_matrix(infected, species, k);
+		print_csv_matrix_in_file(infected, result_filename);
+		print_in_file("\n", result_filename);
 
-		printf("Recovered table\n");
-		print_matrix(recovered, species, k);
-		printf("\n");
+		print_in_file("Recovered table\n", result_filename);
+		//print_matrix(recovered, species, k);
+		print_csv_matrix_in_file(recovered, result_filename);
+		print_in_file("\n", result_filename);
 	}
 
 	return 0;

@@ -1,0 +1,36 @@
+Day 0
+Susceptible table
+20, 30
+
+Infected table
+1, 1
+1, 1
+
+Recovered table
+0, 0
+0, 0
+
+Day 1
+Susceptible table
+15.5359, 16.1966
+
+Infected table
+2.09611, 3.19159
+4.26727, 3.6935
+
+Recovered table
+0.368561, 0.802386
+0.393902, 1.18114
+
+Day 2
+Susceptible table
+7.61841, 2.74277
+
+Infected table
+2.70904, 5.39156
+4.90209, 3.66493
+
+Recovered table
+0.715976, 1.93206
+0.765326, 2.20869
+
