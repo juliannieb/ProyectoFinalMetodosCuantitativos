@@ -171,29 +171,41 @@ int main() {
 		s[h] = n[h];
 	}
 
-	const char *result_filename = "result.csv";
+	const char *result_filename = "susceptible.csv";
+	const char *recovered_filename = "recovered.csv";
+	const char *infected_filename = "infected.csv";
 	clean_file(result_filename);
+	clean_file(recovered_filename);
+	clean_file(infected_filename);
 
 	print_in_file("Day 0\n", result_filename);
+	print_in_file("Day 0\n", recovered_filename);
+	print_in_file("Day 0\n", infected_filename);
 
-	print_in_file("Susceptible table\n", result_filename);
+	//print_in_file("Susceptible table\n", result_filename);
 	print_csv_vector_in_file(s, result_filename);
 	print_in_file("\n", result_filename);
 
-	print_in_file("Infected table\n", result_filename);
-	print_csv_matrix_in_file(infected, result_filename);
-	print_in_file("\n", result_filename);
+	//print_in_file("Infected table\n", infected_filename);
+	print_csv_matrix_in_file(infected, infected_filename);
+	print_in_file("\n", infected_filename);
 
-	print_in_file("Recovered table\n", result_filename);
-	print_csv_matrix_in_file(recovered, result_filename);
-	print_in_file("\n", result_filename);
+	//print_in_file("Recovered table\n", recovered_filename);
+	print_csv_matrix_in_file(recovered, recovered_filename);
+	print_in_file("\n", recovered_filename);
 
 	for (int a = 1; a <= t; a++) {
 
-		ofstream file;
+		ofstream file, file2, file3;
 		file.open(result_filename, ios::out | ios::app);
+		file2.open(infected_filename, ios::out | ios::app);
+		file3.open(recovered_filename, ios::out | ios::app);
 		file << "Day " << a << "\n";
+		file2 << "Day " << a << "\n";
+		file3 << "Day " << a << "\n";
 		file.close();
+		file2.close();
+		file3.close();
 
 		for (int h = 0; h < species; h++) {
 			s[h] = calculate_susceptible_population(s, beta, recovered, infected, rho, k, h, m, k1, n);
@@ -205,20 +217,20 @@ int main() {
 			}
 		}
 
-		print_in_file("Susceptible table\n", result_filename);
+		//print_in_file("Susceptible table\n", result_filename);
 		//print_vector(s, species);
 		print_csv_vector_in_file(s, result_filename);
 		print_in_file("\n", result_filename);
 
-		print_in_file("Infected table\n", result_filename);
+		//print_in_file("Infected table\n", infected_filename);
 		//print_matrix(infected, species, k);
-		print_csv_matrix_in_file(infected, result_filename);
-		print_in_file("\n", result_filename);
+		print_csv_matrix_in_file(infected, infected_filename);
+		print_in_file("\n", infected_filename);
 
-		print_in_file("Recovered table\n", result_filename);
+		//print_in_file("Recovered table\n", recovered_filename);
 		//print_matrix(recovered, species, k);
-		print_csv_matrix_in_file(recovered, result_filename);
-		print_in_file("\n", result_filename);
+		print_csv_matrix_in_file(recovered, recovered_filename);
+		print_in_file("\n", recovered_filename);
 	}
 
 	return 0;
